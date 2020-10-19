@@ -1,0 +1,1599 @@
+<template>
+  <div>
+    <a-button class="editable-add-btn" type="primary" @click="handleAdd">添加行</a-button>
+    <a-table
+      :columns="columns"
+      :data-source="dataSource"
+      bordered
+      :pagination="false"
+      class="account-report-table"
+      :scroll="{ x: 'calc(700px + 50%)', y: 500 }">
+      <template slot="used" slot-scope="text, record,index">
+        <editable-cell :text="text" :record="record" :index="index" :type="1" :totalInfo="totalInfo" @change="onCellChange(record.key, 'used', $event)" />
+      </template>
+      <template slot="price" slot-scope="text, record,index">
+        <editable-cell :text="text" :record="record" :index="index" :type="2" :totalInfo="totalInfo" @change="onCellChange(record.key, 'price', $event)" />
+      </template>
+      <template slot="select" slot-scope="text, record,index">
+        <td-select  :record="record" :index="index" :selectList="selectList"   @selectChange="onCellChangeSelect"></td-select>
+      </template>
+      <!--//常规成分-->
+      <template slot="gwz" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].gwz"  @inputChange="inputChange(record.key, 'gwz', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="dbz" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].dbz"  @inputChange="inputChange(record.key, 'dbz', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="cxw" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].cxw"  @inputChange="inputChange(record.key, 'cxw', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="ycqcwczf" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].ycqcwczf"  @inputChange="inputChange(record.key, 'ycqcwczf', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sycqcw" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sycqcw"  @inputChange="inputChange(record.key, 'sycqcw', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="chf" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].chf"  @inputChange="inputChange(record.key, 'chf', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <!--//能量-->
+      <template slot="zn" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].zn"  @inputChange="inputChange(record.key, 'zn', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="xhn" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].xhn"  @inputChange="inputChange(record.key, 'xhn', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="dxn" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].dxn"  @inputChange="inputChange(record.key, 'dxn', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="jn" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].jn"  @inputChange="inputChange(record.key, 'jn', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <!--//脂肪酸-->
+      <template slot="czf" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].czf"  @inputChange="inputChange(record.key, 'czf', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="bhzfs" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].bhzfs"  @inputChange="inputChange(record.key, 'bhzfs', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="dbbhzfs" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].dbbhzfs"  @inputChange="inputChange(record.key, 'dbbhzfs', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="mbbhzfs" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].mbbhzfs"  @inputChange="inputChange(record.key, 'mbbhzfs', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <!--//脂肪酸-->
+      <template slot="rt" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].rt"  @inputChange="inputChange(record.key, 'rt', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="zt" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].zt"  @inputChange="inputChange(record.key, 'zt', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="mzt" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].mzt"  @inputChange="inputChange(record.key, 'mzt', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sst" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sst"  @inputChange="inputChange(record.key, 'sst', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="mrt" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].mrt"  @inputChange="inputChange(record.key, 'mrt', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="djt" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].djt"  @inputChange="inputChange(record.key, 'djt', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="df" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].df"  @inputChange="inputChange(record.key, 'df', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="zxxdxw" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].zxxdxw"  @inputChange="inputChange(record.key, 'zxxdxw', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sxxdxw" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sxxdxw"  @inputChange="inputChange(record.key, 'sxxdxw', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sxxdmzs" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sxxdmzs"  @inputChange="inputChange(record.key, 'sxxdmzs', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="zssxw" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].zssxw"  @inputChange="inputChange(record.key, 'zssxw', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="brxssxw" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].brxssxw"  @inputChange="inputChange(record.key, 'brxssxw', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="krxssxw" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].krxssxw"  @inputChange="inputChange(record.key, 'krxssxw', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <!--//氨基酸-->
+      <template slot="las" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].las"  @inputChange="inputChange(record.key, 'las', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="das" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].das"  @inputChange="inputChange(record.key, 'das', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="gas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].gas"  @inputChange="inputChange(record.key, 'gas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sas" @inputChange="inputChange(record.key, 'sas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="seas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].seas"  @inputChange="inputChange(record.key, 'seas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="ylas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].ylas"  @inputChange="inputChange(record.key, 'ylas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="liangas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].liangas"  @inputChange="inputChange(record.key, 'liangas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="jas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].jas"  @inputChange="inputChange(record.key, 'jas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="qas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].qas"  @inputChange="inputChange(record.key, 'qas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="zas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].zas"  @inputChange="inputChange(record.key, 'zas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="bbas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].bbas" @inputChange="inputChange(record.key, 'bbas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="bas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].bas"  @inputChange="inputChange(record.key, 'bas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="luoas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].luoas"  @inputChange="inputChange(record.key, 'luoas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="tdas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].tdas"  @inputChange="inputChange(record.key, 'tdas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="guas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].guas"  @inputChange="inputChange(record.key, 'guas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="ganas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].ganas"  @inputChange="inputChange(record.key, 'ganas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="fas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].fas"  @inputChange="inputChange(record.key, 'fas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sias" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sias"  @inputChange="inputChange(record.key, 'sias', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <!--//常量元素-->
+      <template slot="gai" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].gai"  @inputChange="inputChange(record.key, 'gai', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="lin" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].lin"  @inputChange="inputChange(record.key, 'lin', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="zsl" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].zsl"  @inputChange="inputChange(record.key, 'zsl', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="na" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].na"  @inputChange="inputChange(record.key, 'na', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="lu" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].lu"  @inputChange="inputChange(record.key, 'lu', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="mei" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].mei"  @inputChange="inputChange(record.key, 'mei', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="jia" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].jia"  @inputChange="inputChange(record.key, 'jia', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="liu" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].liu"  @inputChange="inputChange(record.key, 'liu', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <!--//微量元素-->
+      <template slot="tong" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].tong"  @inputChange="inputChange(record.key, 'tong', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="dian" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].dian"  @inputChange="inputChange(record.key, 'dian', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="tie" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].tie"  @inputChange="inputChange(record.key, 'tie', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="meng" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].meng" @inputChange="inputChange(record.key, 'meng', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sai" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sai"  @inputChange="inputChange(record.key, 'sai', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="xin" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].xin"  @inputChange="inputChange(record.key, 'xin', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="ge" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].ge"  @inputChange="inputChange(record.key, 'ge', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="mu" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].mu"  @inputChange="inputChange(record.key, 'mu', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <!-- //维生素-->
+      <template slot="hlbs" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].hlbs"  @inputChange="inputChange(record.key, 'hlbs', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="wss" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].wss"  @inputChange="inputChange(record.key, 'wss', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="liuas" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].liuas"  @inputChange="inputChange(record.key, 'liuas', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="hhs" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].dbz"  @inputChange="inputChange(record.key, 'hhs', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="yans" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].yans"  @inputChange="inputChange(record.key, 'yans', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="fans" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].fans"  @inputChange="inputChange(record.key, 'fans', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="wssb" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].wssb"  @inputChange="inputChange(record.key, 'wssb', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="sws" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].sws"  @inputChange="inputChange(record.key, 'sws', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="yes" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].yes"  @inputChange="inputChange(record.key, 'yes', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="wssb12" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].wssb12"  @inputChange="inputChange(record.key, 'wssb12', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="danjian" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].danjian"  @inputChange="inputChange(record.key, 'danjian', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="vaiu" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].vaiu"  @inputChange="inputChange(record.key, 'vaiu', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="vdiu" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].vdiu"  @inputChange="inputChange(record.key, 'vdiu', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="vk" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].vk"  @inputChange="inputChange(record.key, 'vk', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="ysy" slot-scope="text, record,index">
+        <div v-if="index == 0">
+          <input-table :text="text" :theory="dataSource[1].ysy"  @inputChange="inputChange(record.key, 'ysy', $event)"></input-table>
+        </div>
+        <span v-else>{{text?text:0}}</span>
+      </template>
+      <template slot="operation" slot-scope="text, record,index">
+
+        <a-popconfirm
+          v-if="dataSource.length && index>= 3"
+          title="确定删除当前行?"
+          @confirm="() => onDelete(record.key)">
+          <a href="javascript:;">删除</a>
+        </a-popconfirm>
+        <span v-else>-</span>
+      </template>
+    </a-table>
+  </div>
+
+</template>
+<script>
+  import EditableCell from './EditableCell'
+  import TdSelect from './TdSelect'
+  import InputTable from './InputTable'
+  import {
+    cfnMaterialAa
+  } from '@/api/axios'
+  export default {
+    name: 'AccountReport',
+    components: {
+      EditableCell,
+      TdSelect,
+      InputTable
+    },
+    data() {
+      return {
+        priceTotal: 0,
+        usedTotal: 0,
+        totalInfo: {
+          totalMes: 0, // 总量
+          totalPrice:0, // 总价
+          totalUnitPrice:0, // 总单价
+        },
+        countInfo: {
+          proximate: { // 常规成分
+            x:0,
+            y:0,
+            z:0
+          }
+        },
+        count: 3,
+        dataSource: [],
+        itemTr: {
+          key: 0,
+          used: '',
+          price: '',
+          select: '',
+          //常规成分
+          gwz: '',
+          dbz: '',
+          cxw: '',
+          ycqcwczf: '',
+          sycqcw: '',
+          chf: '',
+          //能量
+          zn: '',
+          xhn: '',
+          dxn: '',
+          jn:'',
+          //脂肪酸
+          czf: '',
+          bhzfs: '',
+          dbbhzfs: '',
+          mbbhzfs: '',
+          //碳水化合物
+          rt: '',
+          zt: '',
+          mzt: '',
+          sst: '',
+          mrt: '',
+          djt: '',
+          df: '',
+          zxxdxw: '',
+          sxxdxw: '',
+          sxxdmzs: '',
+          zssxw: '',
+          brxssxw: '',
+          krxssxw: '',
+          //氨基酸
+          las: '',
+          das: '',
+          gas: '',
+          sas: '',
+          seas: '',
+          ylas: '',
+          liangas:'',
+          jas: '',
+          qas: '',
+          zas: '',
+          bbas: '',
+          bas: '',
+          luoas: '',
+          tdas: '',
+          guas: '',
+          ganas:'',
+          fas: '',
+          sias: '',
+          //常量元素
+          gai: '',
+          lin: '',
+          zsl: '',
+          na: '',
+          lu: '',
+          mei:'',
+          jia: '',
+          liu:'',
+          //微量元素
+          tong: '',
+          dian: '',
+          tie: '',
+          meng: '',
+          sai: '',
+          xin:'',
+          ge: '',
+          mu: '',
+          //维生素
+          hlbs: '',
+          wss: '',
+          liuas: '',
+          hhs: '',
+          yans:'',
+          fans:'',
+          wssb:'',
+          sws:'',
+          yes:'',
+          wssb12:'',
+          danjian: '',
+          vaiu:'',
+          vdiu: '',
+          vk: '',
+          ysy: '',
+        },
+        columns: [
+          {
+            title: '能量标准分析',
+            fixed: 'left',
+            children: [
+              {
+                title: '总量(kg)/总价(元)',
+                dataIndex: 'used',
+                key: '1',
+                width: 150,
+                scopedSlots: { customRender: 'used' },
+              },
+              {
+                title: '总单价(元/kg）',
+                dataIndex: 'price',
+                key: '2',
+                width: 150,
+                colSpan: 2,
+                scopedSlots: { customRender: 'price' },
+              },
+              {
+                title: 'select',
+                colSpan: 0,
+                key: '3',
+                dataIndex: '',
+                width: 200,
+                scopedSlots: { customRender: 'select' }
+              },
+            ]
+          },
+          {
+            title: '常规成分(%)',
+            children: [
+              {
+                title: '干物质',
+                dataIndex: 'gwz',
+                key: '11',
+                width: 120,
+                scopedSlots: { customRender: 'gwz' }
+              },
+              {
+                title: '粗蛋白',
+                dataIndex: 'dbz',
+                key: '12',
+                width: 120,
+                scopedSlots: { customRender: 'dbz' }
+              },
+              {
+                title: '粗纤维',
+                dataIndex: 'cxw',
+                key: '13',
+                width: 120,
+                scopedSlots: { customRender: 'cxw' }
+              },
+              {
+                title: '乙醚浸出物粗脂肪',
+                dataIndex: 'ycqcwczf',
+                key: '14',
+                width: 150,
+                scopedSlots: { customRender: 'ycqcwczf' }
+              },
+              {
+                title: '酸乙醚浸出物',
+                dataIndex: 'sycqcw',
+                key: '15',
+                width: 120,
+                scopedSlots: { customRender: 'sycqcw' }
+              },
+              {
+                title: '粗灰分',
+                dataIndex: 'chf',
+                key: '16',
+                width: 120,
+                scopedSlots: { customRender: 'chf' }
+              },
+            ],
+          },
+          {
+            title: '能量（mj/kg）',
+            children: [
+              {
+                title: '总能',
+                dataIndex: 'zn',
+                key: '21',
+                width: 120,
+                scopedSlots: { customRender: 'zn' }
+              },
+              {
+                title: '消化能',
+                dataIndex: 'xhn',
+                key: '22',
+                width: 120,
+                scopedSlots: { customRender: 'xhn' }
+              },
+              {
+                title: '代谢能',
+                dataIndex: 'dxn',
+                key: '23',
+                width: 120,
+                scopedSlots: { customRender: 'xhn' }
+              },
+              {
+                title: '净能',
+                dataIndex: 'jn',
+                key: '24',
+                width: 120,
+                scopedSlots: { customRender: 'jn' }
+              }
+            ]
+          },
+          {
+            title: '脂肪酸（%）',
+            children: [
+              {
+                title: '粗脂肪',
+                dataIndex: 'czf',
+                key: '31',
+                width: 120,
+                scopedSlots: { customRender: 'czf' }
+              },
+              {
+                title: '饱和脂肪酸',
+                dataIndex: 'bhzfs',
+                key: '32',
+                width: 120,
+                scopedSlots: { customRender: 'bhzfs' }
+              },
+              {
+                title: '单不饱和脂肪酸',
+                dataIndex: 'dbbhzfs',
+                key: '33',
+                width: 120,
+                scopedSlots: { customRender: 'dbbhzfs' }
+              },
+              {
+                title: '多不饱和脂肪酸',
+                dataIndex: 'mbbhzfs',
+                key: '34',
+                width: 120,
+                scopedSlots: { customRender: 'mbbhzfs' }
+              }
+            ]
+          },
+          {
+            title: '碳水化合物(%)',
+            children: [
+              {
+                title: '乳糖',
+                dataIndex: 'rt',
+                key: '41',
+                width: 120,
+                scopedSlots: { customRender: 'rt' }
+              },
+              {
+                title: '蔗糖',
+                dataIndex: 'zt',
+                key: '42',
+                width: 120,
+                scopedSlots: { customRender: 'zt' }
+              },
+              {
+                title: '棉子糖',
+                dataIndex: 'mzt',
+                key: '43',
+                width: 120,
+                scopedSlots: { customRender: 'mzt' }
+              },
+              {
+                title: '水苏糖',
+                dataIndex: 'sst',
+                key: '44',
+                width: 120,
+                scopedSlots: { customRender: 'sst' }
+              },
+              {
+                title: '毛蕊糖',
+                dataIndex: 'mrt',
+                key: '45',
+                width: 120,
+                scopedSlots: { customRender: 'mrt' }
+              },
+              {
+                title: '低聚糖',
+                dataIndex: 'djt',
+                key: '46',
+                width: 120,
+                scopedSlots: { customRender: 'djt' }
+              },
+              {
+                title: '淀粉',
+                dataIndex: 'df',
+                key: '47',
+                width: 120,
+                scopedSlots: { customRender: 'df' }
+              },
+              {
+                title: '中性洗涤纤维',
+                dataIndex: 'zxxdxw',
+                key: '48',
+                width: 120,
+                scopedSlots: { customRender: 'zxxdxw' }
+              },
+              {
+                title: '酸性洗涤纤维',
+                dataIndex: 'sxxdxw',
+                key: '49',
+                width: 120,
+                scopedSlots: { customRender: 'sxxdxw' }
+              },
+              {
+                title: '酸性洗涤木质素',
+                dataIndex: 'sxxdmzs',
+                key: '410',
+                width: 120,
+                scopedSlots: { customRender: 'sxxdmzs' }
+              },
+              {
+                title: '总膳食纤维',
+                dataIndex: 'zssxw',
+                key: '411',
+                width: 120,
+                scopedSlots: { customRender: 'zssxw' }
+              },
+              {
+                title: '不溶性膳食纤维',
+                dataIndex: 'brxssxw',
+                key: '412',
+                width: 120,
+                scopedSlots: { customRender: 'brxssxw' }
+              },
+              {
+                title: '可溶性膳食纤维',
+                dataIndex: 'krxssxw',
+                key: '413',
+                width: 120,
+                scopedSlots: { customRender: 'krxssxw' }
+              },
+            ]
+          },
+          {
+            title: '氨基酸',
+            children: [
+              {
+                title: '赖氨酸%',
+                dataIndex: 'las',
+                key: '51',
+                width: 120,
+                scopedSlots: { customRender: 'las' }
+              },
+              {
+                title: '蛋氨酸%',
+                dataIndex: 'das',
+                key: '52',
+                width: 120,
+                scopedSlots: { customRender: 'das' }
+              },
+              {
+                title: '胱氨酸%',
+                dataIndex: 'gas',
+                key: '53',
+                width: 120,
+                scopedSlots: { customRender: 'gas' }
+              },
+              {
+                title: '苏氨酸%',
+                dataIndex: 'sas',
+                key: '54',
+                width: 120,
+                scopedSlots: { customRender: 'sas' }
+              },
+              {
+                title: '色氨酸%',
+                dataIndex: 'seas',
+                key: '55',
+                width: 120,
+                scopedSlots: { customRender: 'seas' }
+              },
+              {
+                title: '异亮氨酸%',
+                dataIndex: 'ylas',
+                key: '56',
+                width: 120,
+                scopedSlots: { customRender: 'ylas' }
+              },
+              {
+                title: '亮氨酸%',
+                dataIndex: 'liangas',
+                key: '57',
+                width: 120,
+                scopedSlots: { customRender: 'liangas' }
+              },
+              {
+                title: '精氨酸%',
+                dataIndex: 'jas',
+                key: '58',
+                width: 120,
+                scopedSlots: { customRender: 'jas' }
+              },
+              {
+                title: '缬氨酸%',
+                dataIndex: 'qas',
+                key: '59',
+                width: 120,
+                scopedSlots: { customRender: 'qas' }
+              },
+              {
+                title: '组氨酸%',
+                dataIndex: 'zas',
+                key: '510',
+                width: 120,
+                scopedSlots: { customRender: 'zas' }
+              },
+              {
+                title: '苯丙氨酸%',
+                dataIndex: 'bbas',
+                key: '511',
+                width: 120,
+                scopedSlots: { customRender: 'bbas' }
+              },
+              {
+                title: '酪氨酸%',
+                dataIndex: 'luoas',
+                key: '512',
+                width: 120,
+                scopedSlots: { customRender: 'luoas' }
+              },
+              {
+                title: '丙氨酸%',
+                dataIndex: 'bas',
+                key: '513',
+                width: 120,
+                scopedSlots: { customRender: 'bas' }
+              },
+              {
+                title: '天冬氨酸%',
+                dataIndex: 'tdas',
+                key: '514',
+                width: 120,
+                scopedSlots: { customRender: 'tdas' }
+              },
+              {
+                title: '谷氨酸%',
+                dataIndex: 'guas',
+                key: '515',
+                width: 120,
+                scopedSlots: { customRender: 'guas' }
+              },
+              {
+                title: '甘氨酸%',
+                dataIndex: 'ganas',
+                key: '516',
+                width: 120,
+                scopedSlots: { customRender: 'ganas' }
+              },
+              {
+                title: '脯氨酸%',
+                dataIndex: 'fas',
+                key: '517',
+                width: 120,
+                scopedSlots: { customRender: 'fas' }
+              },
+              {
+                title: '丝氨酸%',
+                dataIndex: 'sias',
+                key: '518',
+                width: 120,
+                scopedSlots: { customRender: 'sias' }
+              },
+            ]
+          },
+          {
+            title: '常量元素(%)',
+            children: [
+              {
+                title: '钙',
+                dataIndex: 'gai',
+                key: '61',
+                width: 120,
+                scopedSlots: { customRender: 'gai' }
+              },
+              {
+                title: '磷',
+                dataIndex: 'lin',
+                key: '62',
+                width: 120,
+                scopedSlots: { customRender: 'lin' }
+              },
+              {
+                title: '植酸磷',
+                dataIndex: 'zsl',
+                key: '63',
+                width: 120,
+                scopedSlots: { customRender: 'zsl' }
+              },
+              {
+                title: '钠',
+                dataIndex: 'na',
+                key: '64',
+                width: 120,
+                scopedSlots: { customRender: 'na' }
+              },
+              {
+                title: '氯',
+                dataIndex: 'lu',
+                key: '65',
+                width: 120,
+                scopedSlots: { customRender: 'lu' }
+              },
+              {
+                title: '镁',
+                dataIndex: 'mei',
+                key: '66',
+                width: 120,
+                scopedSlots: { customRender: 'mei' }
+              },
+              {
+                title: '钾',
+                dataIndex: 'jia',
+                key: '67',
+                width: 120,
+                scopedSlots: { customRender: 'jia' }
+              },
+              {
+                title: '硫',
+                dataIndex: 'liu',
+                key: '68',
+                width: 120,
+                scopedSlots: { customRender: 'liu' }
+              }
+            ]
+          },
+          {
+            title: '微量元素（mg/kg）',
+            children: [
+              {
+                title: '铜',
+                dataIndex: 'tong',
+                key: '71',
+                width: 120,
+                scopedSlots: { customRender: 'tong' }
+              },
+              {
+                title: '碘',
+                dataIndex: 'dian',
+                key: '72',
+                width: 120,
+                scopedSlots: { customRender: 'dian' }
+              },
+              {
+                title: '铁',
+                dataIndex: 'tie',
+                key: '73',
+                width: 120,
+                scopedSlots: { customRender: 'tie' }
+              },
+              {
+                title: '锰',
+                dataIndex: 'meng',
+                key: '74',
+                width: 120,
+                scopedSlots: { customRender: 'meng' }
+              },
+              {
+                title: '硒',
+                dataIndex: 'sai',
+                key: '75',
+                width: 120,
+                scopedSlots: { customRender: 'sai' }
+              },
+              {
+                title: '锌',
+                dataIndex: 'xin',
+                key: '76',
+                width: 120,
+                scopedSlots: { customRender: 'xin' }
+              },
+              {
+                title: '铬',
+                dataIndex: 'ge',
+                key: '77',
+                width: 120,
+                scopedSlots: { customRender: 'ge' }
+              },
+              {
+                title: '钼',
+                dataIndex: 'mu',
+                key: '78',
+                width: 120,
+                scopedSlots: { customRender: 'mu' }
+              }
+            ]
+          },
+          {
+            title: '维生素（mg/kg）',
+            children: [
+              {
+                title: '胡萝卜素',
+                dataIndex: 'hlbs',
+                key: '81',
+                width: 120,
+                scopedSlots: { customRender: 'hlbs' }
+              },
+              {
+                title: '维生素E',
+                dataIndex: 'wss',
+                key: '82',
+                width: 120,
+                scopedSlots: { customRender: 'wss' }
+              },
+              {
+                title: 'VB1硫胺素',
+                dataIndex: 'liuas',
+                key: '83',
+                width: 120,
+                scopedSlots: { customRender: 'liuas' }
+              },
+              {
+                title: 'VB2核黄素',
+                dataIndex: 'hhs',
+                key: '84',
+                width: 120,
+                scopedSlots: { customRender: 'hhs' }
+              },
+              {
+                title: 'VB3烟酸',
+                dataIndex: 'yans',
+                key: '85',
+                width: 120,
+                scopedSlots: { customRender: 'yans' }
+              },
+              {
+                title: 'VB5泛酸',
+                dataIndex: 'fans',
+                key: '86',
+                width: 120,
+                scopedSlots: { customRender: 'fans' }
+              },
+              {
+                title: '维生素B6',
+                dataIndex: 'wssb',
+                key: '87',
+                width: 120,
+                scopedSlots: { customRender: 'wssb' }
+              },
+              {
+                title: '生物素',
+                dataIndex: 'sws',
+                key: '88',
+                width: 120,
+                scopedSlots: { customRender: 'sws' }
+              },
+              {
+                title: '叶酸',
+                dataIndex: 'yes',
+                key: '89',
+                width: 120,
+                scopedSlots: { customRender: 'yes' }
+              },
+              {
+                title: '维生素B12',
+                dataIndex: 'wssb12',
+                key: '810',
+                width: 120,
+                scopedSlots: { customRender: 'wssb12' }
+              },
+              {
+                title: '胆碱',
+                dataIndex: 'danjian',
+                key: '811',
+                width: 120,
+                scopedSlots: { customRender: 'danjian' }
+              },
+              {
+                title: 'VA IU/KG',
+                dataIndex: 'vaiu',
+                key: '812',
+                width: 120,
+                scopedSlots: { customRender: 'vaiu' }
+              },
+              {
+                title: 'VD3 IU/KG',
+                dataIndex: 'vdiu',
+                key: '813',
+                width: 120,
+                scopedSlots: { customRender: 'vdiu' }
+              },
+              {
+                title: 'VK mg/kg',
+                dataIndex: 'vk',
+                key: '814',
+                width: 120,
+                scopedSlots: { customRender: 'vk' }
+              },
+              {
+                title: '亚油酸%',
+                dataIndex: 'ysy',
+                key: '815',
+                width: 120,
+                scopedSlots: { customRender: 'ysy' }
+              },
+            ]
+          },
+          {
+            title: '操作',
+            dataIndex: 'operation',
+            align: 'center',
+            scopedSlots: { customRender: 'operation' },
+            fixed: 'right',
+            width: 100
+          },
+        ],
+        countTotalList: [],
+        array: [],
+        selectList: [],
+        chooseVlue: 0,
+        itemElement: {},
+        // 分页参数
+        ipagination:{
+          current: 1,
+          pageSize: 10,
+          pageSizeOptions: ['10', '20', '30'],
+          position: 'top',
+          showTotal: (total, range) => {
+            return range[0] + "-" + range[1] + " 共" + total + "条"
+          },
+          showQuickJumper: true,
+          showSizeChanger: true,
+          total: 0
+        },
+      na:{
+        name:0
+      }
+      };
+    },
+    created () {
+      this.dataSource = []
+      let arr = [0,1,2,3]
+      for (let i in arr) {
+        this.dataSource.push(Object.assign({},this.itemTr,{key:arr[i]}))
+      }
+    },
+    mounted() {
+      cfnMaterialAa({}).then(res => {
+        if (res.success) {
+          this.selectList = res.result
+        }
+      })
+    },
+    methods: {
+      handleTableChange(pagination, filters, sorter) {
+        this.ipagination = pagination;
+      },
+      onCellChange(key, dataIndex, value) {
+        console.log(key, dataIndex, value, 10)
+        const dataSource = [...this.dataSource];
+        const target = dataSource.find(item => item.key === key);
+        if (target) {
+          target[dataIndex] = value;
+          this.dataSource = dataSource;
+        }
+        this.totalFun()
+      },
+      totalFun () {
+        let arr = [] // 使用量列表
+        let arrPrice = [] // 单价列表
+        for (let i in this.dataSource) {
+          if (this.dataSource[i].used) {
+            arr.push(parseFloat(this.dataSource[i].used))
+          }
+          if (this.dataSource[i].price) {
+            arrPrice.push(parseFloat(this.dataSource[i].used) * parseFloat(this.dataSource[i].price))
+          }
+        }
+        this.totalInfo.totalMes = this.sum(arr) // 总量
+        this.totalInfo.totalPrice = this.sum(arrPrice) // 总价
+        if (this.totalInfo.totalMes) { // 总单价
+          let num = this.totalInfo.totalPrice/this.totalInfo.totalMes
+          this.totalInfo.totalUnitPrice = this.ormatDecimal(num, 4)
+        } else {
+          this.totalInfo.totalUnitPrice = 0
+        }
+      },
+      inputChange (key, dataIndex, value) {
+        const dataSource = [...this.dataSource];
+        const target = dataSource.find(item => item.key === key);
+        if (target) {
+          target[dataIndex] = value;
+          this.dataSource = dataSource;
+        }
+      },
+      handleAdd() {
+        this.count +=1;
+        this.dataSource.push(Object.assign({},this.itemTr,{key:this.count}))
+      },
+      onDelete(key) {
+        const dataSource = [...this.dataSource];
+        this.dataSource = dataSource.filter(item => item.key !== key);
+        this.totalFun()
+        this.onCellChangeSelect()
+      },
+      //加法
+      sum(arr) {
+        let s = 0;
+        for (var i=arr.length-1; i>=0; i--) {
+          if (parseFloat(arr[i])) {
+            s += parseFloat(arr[i]);
+          }
+        }
+        return s;
+      },
+      //去重
+      unique (arr) {
+        const res = new Map();
+        return arr.filter((arr) => !res.has(arr.key) && res.set(arr.key,1))
+      },
+      // 保留小数，不四舍五入
+      ormatDecimal(num, decimal) {
+        num = num.toString()
+        let index = num.indexOf('.')
+        if (index !== -1) {
+          if (num.split('.')[1].length > decimal) {
+            num = num.substring(0, 4)
+          } else {
+            num = num
+          }
+        }
+        return parseFloat(num)
+      },
+      computedValue(index,value,key,selKey) {
+        let arr = [], array = [], realValue = []
+        for (let i in this.selectList) {
+          if(this.selectList[i].cfn_code == value ) { // 筛选值
+            // 理论一项值                         选择下拉框值                                            使用量
+            let theory = parseFloat(parseFloat(this.selectList[i][selKey])?this.selectList[i][selKey]:0)*parseFloat(this.dataSource[index].used?this.dataSource[index].used:0)/1000
+            console.log(theory)
+            // 实际一项值                           选择下拉框值                                                     使用量                                                   总量
+            let real = parseFloat(parseFloat(this.selectList[i][selKey])?this.selectList[i][selKey]:0)*parseFloat(this.dataSource[index].used?this.dataSource[index].used:0)/this.totalInfo.totalMes
+            this.dataSource[index][key] = String(theory).replace(/^(.*\..{4}).*$/,"$1")+ '/' + String(real).replace(/^(.*\..{4}).*$/,"$1") // 值保留4位
+          }
+        }
+        if (this.dataSource.length >3) { // 第四行开始计算值
+          arr = this.dataSource.slice(3)
+          for (let j in arr) {
+            if (arr[j][key]) {
+              array.push(arr[j][key].split('/')[0])
+              realValue.push(arr[j][key].split('/')[1])
+            }
+          }
+          this.dataSource[1][key] =String(this.ormatDecimal(this.sum(array), 4)) // 理论计算值
+          this.dataSource[2][key] = String(this.ormatDecimal(this.sum(realValue), 4)) // 实际计算值
+        } else {
+          this.dataSource[1][key] = '0'
+          this.dataSource[2][key] = '0'
+        }
+      },
+      //能量
+      computedValueEnergy(index,value,key,selKey) {
+        let arr = [], array = [], realValue = []
+        for (let i in this.selectList) {
+          if(this.selectList[i].cfn_code == value ) { // 筛选值
+            // 理论一项值                         选择下拉框值                                            使用量
+            let theory = parseFloat(parseFloat(this.selectList[i][selKey])?this.selectList[i][selKey]:0)*parseFloat(this.dataSource[index].used?this.dataSource[index].used:0)/1000
+            console.log(theory)
+            // 实际一项值                           选择下拉框值                                                     使用量                                                   总量
+            let real = parseFloat(parseFloat(this.selectList[i][selKey])?this.selectList[i][selKey]:0)*parseFloat(this.dataSource[index].used?this.dataSource[index].used:0)/this.totalInfo.totalMes
+            this.dataSource[index][key] = String(theory).replace(/^(.*\..{4}).*$/,"$1")+ '/' + String(real).replace(/^(.*\..{4}).*$/,"$1") // 值保留4位
+          }
+        }
+        if (this.dataSource.length >3) { // 第四行开始计算值
+          arr = this.dataSource.slice(3)
+          for (let j in arr) {
+            if (arr[j][key]) {
+              array.push(arr[j][key].split('/')[0])
+              realValue.push(arr[j][key].split('/')[1])
+            }
+          }
+          this.dataSource[1][key] =String(this.ormatDecimal(this.sum(array), 4)) // 理论计算值
+          this.dataSource[2][key] = String(this.ormatDecimal(this.sum(realValue), 4)) // 实际计算值
+        } else {
+          this.dataSource[1][key] = '0'
+          this.dataSource[2][key] = '0'
+        }
+      },
+      //氨基酸
+      computedValueAA(index,value,key,selKey) {
+        let arr = [], array = [], realValue = []
+        let str1 = parseInt(selKey.substr(2))+1
+        let str = selKey.slice(0,selKey.length-1)+str1;
+
+        for (let i in this.selectList) {
+          if(this.selectList[i].cfn_code == value ) { // 筛选值
+            // 理论一项值                           消化率                                                                   选择下拉框值                                            使用量
+            let theory = parseFloat(parseFloat(this.selectList[i][str])?this.selectList[i][str]:0)*parseFloat(parseFloat(this.selectList[i][selKey])?this.selectList[i][selKey]:0)*parseFloat(this.dataSource[index].used?this.dataSource[index].used:0)/10000
+            console.log(theory)
+            // 实际一项值                           选择下拉框值                                                     使用量                                                   总量
+            let real = parseFloat(parseFloat(this.selectList[i][selKey])?this.selectList[i][selKey]:0)*parseFloat(this.dataSource[index].used?this.dataSource[index].used:0)/this.totalInfo.totalMes
+            this.dataSource[index][key] = String(theory).replace(/^(.*\..{4}).*$/,"$1")+ '/' + String(real).replace(/^(.*\..{4}).*$/,"$1") // 值保留4位
+          }
+        }
+        if (this.dataSource.length >3) { // 第四行开始计算值
+          arr = this.dataSource.slice(3)
+          for (let j in arr) {
+            if (arr[j][key]) {
+              array.push(arr[j][key].split('/')[0])
+              realValue.push(arr[j][key].split('/')[1])
+            }
+          }
+          this.dataSource[1][key] =String(this.ormatDecimal(this.sum(array), 4)) // 理论计算值
+          this.dataSource[2][key] = String(this.ormatDecimal(this.sum(realValue), 4)) // 实际计算值
+        } else {
+          this.dataSource[1][key] = '0'
+          this.dataSource[2][key] = '0'
+        }
+      },
+      onCellChangeSelect (index,value) {
+        //常规成分
+        this.computedValue (index,value,'gwz','A001')
+
+        this.computedValue (index,value,'dbz','A002')
+        this.computedValue (index,value,'cxw','A003')
+        this.computedValue (index,value,'ycqcwczf','A004')
+        this.computedValue (index,value,'sycqcw','A005')
+        this.computedValue (index,value,'chf','A006')
+        //能量
+        this.computedValue (index,value,'zn','A011')
+        this.computedValueEnergy (index,value,'xhn','A012')
+        this.computedValue (index,value,'dxn','A013')
+        this.computedValue (index,value,'jn','A014')
+        //脂肪酸
+        this.computedValue (index,value,'czf','A021')
+        this.computedValue (index,value,'bhzfs','A022')
+        this.computedValue (index,value,'dbbhzfs','A023')
+        this.computedValue (index,value,'mbbhzfs','A024')
+        //碳水化合物
+        this.computedValue (index,value,'rt','A031')
+        this.computedValue (index,value,'zt','A032')
+        this.computedValue (index,value,'mzt','A033')
+        this.computedValue (index,value,'sst','A034')
+        this.computedValue (index,value,'mrt','A035')
+        this.computedValue (index,value,'djt','A036')
+        this.computedValue (index,value,'df','A037')
+        this.computedValue (index,value,'zxxdxw','A038')
+        this.computedValue (index,value,'sxxdxw','A039')
+        this.computedValue (index,value,'sxxdmzs','A0310')
+        this.computedValue (index,value,'zssxw','A0311')
+        this.computedValue (index,value,'brxssxw','A0312')
+        this.computedValue (index,value,'krxssxw','A0313')
+        //氨基酸
+        this.computedValueAA (index,value,'las','C001')
+        this.computedValue (index,value,'das','C011')
+        this.computedValue (index,value,'gas','C021')
+        this.computedValue (index,value,'sas','C031')
+        this.computedValue (index,value,'seas','C041')
+        this.computedValue (index,value,'ylas','C051')
+        this.computedValue (index,value,'liangas','C061')
+        this.computedValue (index,value,'jas','C071')
+        this.computedValue (index,value,'qas','C081')
+        this.computedValue (index,value,'zas','C091')
+        this.computedValue (index,value,'bbas','C101')
+        this.computedValue (index,value,'bas','C111')
+        this.computedValue (index,value,'luoas','C121')
+        this.computedValue (index,value,'tdas','C131')
+        this.computedValue (index,value,'guas','C141')
+        this.computedValue (index,value,'ganas','C151')
+        this.computedValue (index,value,'fas','C161')
+        this.computedValue (index,value,'sias','C171')
+        //常量元素
+        this.computedValue (index,value,'gai','B001')
+        this.computedValue (index,value,'lin','B002')
+        this.computedValue (index,value,'zsl','B003')
+        this.computedValue (index,value,'na','B005')
+        this.computedValue (index,value,'lu','B006')
+        this.computedValue (index,value,'mei','B007')
+        this.computedValue (index,value,'jia','B008')
+        this.computedValue (index,value,'liu','B009')
+        //微量元素
+        this.computedValue (index,value,'tong','B011')
+        this.computedValue (index,value,'dian','B012')
+        this.computedValue (index,value,'tie','B013')
+        this.computedValue (index,value,'meng','B014')
+        this.computedValue (index,value,'sai','B015')
+        this.computedValue (index,value,'xin','B016')
+        this.computedValue (index,value,'ge','B017')
+        this.computedValue (index,value,'mu','B018')
+        //维生素
+        this.computedValue (index,value,'hlbs','B21')
+        this.computedValue (index,value,'wss','B22')
+        this.computedValue (index,value,'liuas','B23')
+        this.computedValue (index,value,'hhs','B24')
+        this.computedValue (index,value,'yans','B25')
+        this.computedValue (index,value,'fans','B26')
+        this.computedValue (index,value,'wssb','B27')
+        this.computedValue (index,value,'sws','B28')
+        this.computedValue (index,value,'yes','B29')
+        this.computedValue (index,value,'wssb12','B0210')
+        this.computedValue (index,value,'danjian','B0211')
+        this.computedValue (index,value,'vaiu','B0215')
+        this.computedValue (index,value,'vdiu','B0213')
+        this.computedValue (index,value,'vk','B0214')
+        this.computedValue (index,value,'ysy','B0212')
+      },
+    }
+  };
+</script>
+<style scoped>
+  .account-report-table /deep/.ant-table-thead{
+    background-color: #fff;
+
+  }
+  .account-report-table /deep/.ant-table .ant-table-fixed-left {
+    /*border-right: 1px solid #e8e8e8;*/
+
+    width: 500px;
+  }
+  .account-report-table /deep/.ant-table .ant-table-fixed-left table tr:nth-child(1) th{
+    background-color: #CC6600;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(2)  {
+    background-color: #CC9900;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(3)  {
+    background-color: #99CC33;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(4)  {
+    background-color: #999900;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(5)  {
+    background-color: #993399;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(6)  {
+    background-color: #CC3300;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(7)  {
+    background-color: #009933;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(8)  {
+    background-color: #FF9933;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(1) th:nth-child(9)  {
+    background-color: #99CC66;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(2) th:nth-child(4) {
+    color:#FF0033
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(2) th:nth-child(10) {
+    color:#FF0033
+  }
+
+  .account-report-table /deep/.ant-table-thead tr{
+    height: auto !important;
+
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(2) th:nth-child(2){
+    width: 350px;
+  }
+  .account-report-table /deep/.ant-table-thead th{
+    padding: 5px;
+    height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(2) th{
+    height: 60px;
+    padding: 0 5px;
+  }
+  .account-report-table /deep/.ant-table-thead tr:nth-child(2) th {
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .account-report-table /deep/.ant-table-fixed-left .ant-table-thead tr:nth-child(2) th{
+    height:60px
+  }
+  .account-report-table /deep/.ant-table-fixed-right .ant-table-thead tr th{
+    height:120px
+  }
+  .account-report-table /deep/.ant-table-tbody tr td{
+    padding: 5px;
+    height: 60px;
+  }
+</style>
